@@ -16,7 +16,7 @@ function load() {
         btn_cd: new ExpantaNum(0),
         btn_atb_1: new ExpantaNum(0),
         btn_atb_2: new ExpantaNum(0),
-        btn_upd: [false,false,false],
+        btn_upd: [false,false,false,false],
         updintv:50,
         savetime:0
     }
@@ -73,6 +73,14 @@ function loop(mtm=-1) {
     } else {
         document.getElementById("btn-upd-3").className = "s200 black h-white";
     }
+    if (game.btn_upd[3]) {
+        document.getElementById("btn-upd-4").className = "s200 white";
+        document.getElementById("btn-atb-1-4").style = "display:none;";
+        game.btn_atb_1 = new ExpantaNum(0);
+    } else {
+        document.getElementById("btn-upd-4").className = "s200 black h-white";
+        document.getElementById("btn-atb-1-4").style = "text-align: center;";
+    }
 
     document.getElementById("pnt-1").innerHTML = game.pnt;
     document.getElementById("btn-1").innerHTML = game.btn;
@@ -102,7 +110,8 @@ function btn_cst() {
     return game.btn.add(0.5).mul(20);
 }
 function btn_atb1_eff() {
-    return game.btn_atb_1.mul(10);
+    if (game.btn_upd[3]) return game.pnt.div(10).pow(0.5).floor();
+    else return game.btn_atb_1.mul(10);
 }
 function btn_atb1_cst() {
     return game.btn_atb_1.add(0.5).mul(20);
@@ -137,6 +146,12 @@ function get_btn_upd_btf(i) {
         if (game.pnt.gte(1000000) && !game.btn_upd[2]) {
             game.btn_upd[2] = true;
             game.pnt = game.pnt.sub(1000000);
+        }
+    }
+    if (i == 4) {
+        if (game.pnt.gte(100000000) && !game.btn_upd[3]) {
+            game.btn_upd[3] = true;
+            game.pnt = game.pnt.sub(100000000);
         }
     }
 }
