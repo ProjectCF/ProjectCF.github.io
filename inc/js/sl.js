@@ -9,6 +9,8 @@ function exprt() {
 function rst() {
     if (confirm("硬重置没有奖励 要硬重置吗") == true) {
         localStorage.removeItem("test");
+        clearInterval(loopintv);
+        load();
         location.reload();
     }
 }
