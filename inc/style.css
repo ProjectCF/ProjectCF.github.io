@@ -7,16 +7,35 @@ p{
 .white{
     background-color:#ffffff;
 }
+.wl {
+    background-color: #808080;
+}
 .black {
     background-color: #000000;
 }
 .black2{
     color:#000000;
 }
-.s200{
+.s200b{
     width:196px;
     height:146px;
     border:2px solid #0000ff;
+}
+.s80 {
+    width: 80px;
+    height: 40px;
+}
+.bd2r {
+    border: 2px solid #ff0000;
+}
+.bd2b {
+    border: 2px solid #0000ff;
+}
+.bd2l {
+    border: 2px solid #000000;
+}
+.bd2wl {
+    border: 2px solid #808080;
 }
 .div-center{
     margin:auto
