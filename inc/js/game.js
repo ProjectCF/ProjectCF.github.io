@@ -1,4 +1,4 @@
-//自动更新间隔,自动保存间隔,页,成就,新闻,新的升级,有效数字
+//页,成就,新闻,有效数字
 function ENify(x) {
     if (typeof x == "number") return ExpantaNum(x);
     if (typeof x == "null") return ExpantaNum(0);
@@ -13,6 +13,12 @@ function settab(tab) {
     if (ctab) document.getElementById(ctab).style = "display:none;";
     document.getElementById(tab).style = "";
     ctab = tab;
+}
+var cstab = 0;
+function setstab(tab) {
+    if (cstab) document.getElementById(cstab).style = "display:none;";
+    document.getElementById(tab).style = "";
+    cstab = tab;
 }
 function load() {
     game = {
@@ -37,6 +43,8 @@ function load() {
         game.btn_cd = ENify(game.btn_cd);
         game.btn_atb_1 = ENify(game.btn_atb_1);
         game.btn_atb_2 = ENify(game.btn_atb_2);
+        document.getElementById("ch-loopintv-1").value = game.updintv;
+        document.getElementById("ch-saveintv-1").value = game.saveintv;
     }
     lastupd = Date.now();
     if (game.savetime) {
@@ -51,6 +59,12 @@ function setloop(i) {
     game.updintv = i;
     loopintv = setInterval(loop, game.updintv);
 }
+function ch_loopintv() {
+    setloop(parseInt(document.getElementById("ch-loopintv-1").value));
+}
+function ch_saveintv() {
+    game.saveintv=parseInt(document.getElementById("ch-saveintv-1").value);
+}
 function loop(mtm=-1) {
     var tm = Date.now() - lastupd;
     lastupd = Date.now();
@@ -64,44 +78,44 @@ function loop(mtm=-1) {
     if (game.btn_upd[0]) game.pnt = game.pnt.add(btn_atb2_eff().mul(tm).mul(pnt_btn_icd()));
 
     if (game.btn_upd[0]) {
-        document.getElementById("btn-upd-1").className = "s200 white";
+        document.getElementById("btn-upd-1").className = "s200b white";
         document.getElementById("btn-cd-2").style = "display:none;";
         document.getElementById("btn-get-pnt-btn").innerHTML = "手动购买点数已禁用"
     } else {
-        document.getElementById("btn-upd-1").className = "s200 black h-white";
+        document.getElementById("btn-upd-1").className = "s200b black h-white";
         document.getElementById("btn-cd-2").style = "";
         document.getElementById("btn-get-pnt-btn").innerHTML = "点击以获得点数"
     }
     if (game.btn_upd[1]) {
-        document.getElementById("btn-upd-2").className = "s200 white";
+        document.getElementById("btn-upd-2").className = "s200b white";
     } else {
-        document.getElementById("btn-upd-2").className = "s200 black h-white";
+        document.getElementById("btn-upd-2").className = "s200b black h-white";
     }
     if (game.btn_upd[2]) {
-        document.getElementById("btn-upd-3").className = "s200 white";
+        document.getElementById("btn-upd-3").className = "s200b white";
     } else {
-        document.getElementById("btn-upd-3").className = "s200 black h-white";
+        document.getElementById("btn-upd-3").className = "s200b black h-white";
     }
     if (game.btn_upd[3]) {
-        document.getElementById("btn-upd-4").className = "s200 white";
+        document.getElementById("btn-upd-4").className = "s200b white";
         document.getElementById("btn-atb-1-4").style = "display:none;";
         game.btn_atb_1 = new ExpantaNum(0);
     } else {
-        document.getElementById("btn-upd-4").className = "s200 black h-white";
+        document.getElementById("btn-upd-4").className = "s200b black h-white";
         document.getElementById("btn-atb-1-4").style = "text-align: center;";
     }
     if (game.btn_upd[4]) {
-        document.getElementById("btn-upd-5").className = "s200 white";
+        document.getElementById("btn-upd-5").className = "s200b white";
     } else {
-        document.getElementById("btn-upd-5").className = "s200 black h-white";
+        document.getElementById("btn-upd-5").className = "s200b black h-white";
     }
     if (game.btn_upd[5]) {
-        document.getElementById("btn-upd-6").className = "s200 white";
+        document.getElementById("btn-upd-6").className = "s200b white";
         document.getElementById("btn-atb-2-4").style = "display:none;";
         document.getElementById("btn-nxt-1").style = "display:none;";
         game.btn_atb_2 = new ExpantaNum(0);
     } else {
-        document.getElementById("btn-upd-6").className = "s200 black h-white";
+        document.getElementById("btn-upd-6").className = "s200b black h-white";
         document.getElementById("btn-atb-2-4").style = "text-align: center;";
         document.getElementById("btn-nxt-1").style = "text-align: center;";
     }
@@ -117,6 +131,8 @@ function loop(mtm=-1) {
     document.getElementById("btn-atb-2-1").innerHTML = game.btn_atb_2;
     document.getElementById("btn-atb-2-2").innerHTML = btn_atb2_eff();
     document.getElementById("btn-atb-2-3").innerHTML = btn_atb2_cst();
+    document.getElementById("ch-loopintv-2").innerHTML = game.updintv;
+    document.getElementById("ch-saveintv-2").innerHTML = game.saveintv;
 }
 function get_btn_btf() {
     game.btn_prog = game.btn_prog.add(1);
@@ -139,7 +155,7 @@ function btn_cst() {
     return game.btn.add(0.5).mul(20);
 }
 function btn_dis() {
-    if (game.btn_upd[5]) return game.btn.mul(10);
+    if (game.btn_upd[5]) return game.btn.pow(0.8).mul(10);
     else return btn_cst().sub(game.btn_prog).max(0);
 }
 function btn_atb1_eff() {
