@@ -1,7 +1,7 @@
 function eng_atb_cst(i, p = -1) {
     var k = p;
     if (k == -1) k = game.eng_atb[i-1];
-    if (i == 1) return ExpantaNum(1.5).pow(k).sub(1);
+    if (i == 1) return ExpantaNum(1.5).pow(k).sub(0+game.pnt.gte(1e12));
     if (i == 2) return ExpantaNum(10).pow(k);
     if (i == 3) return ExpantaNum(1.5).pow(k);
     if (i == 4) return ExpantaNum(10).pow(k);

@@ -29,11 +29,13 @@ function load() {
         btn_atb_1: new ExpantaNum(0),
         btn_atb_2: new ExpantaNum(0),
         btn_upd: [false, false, false, false, false, false],
-        btn_eng_m:new ExpantaNum(0),
+        btn_eng_m: new ExpantaNum(0),
+        eng_ul:false,
         eng: new ExpantaNum(0),
         eng_btn_m :new ExpantaNum(0),
         eng_atb: [new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0)],
         eng_upd: [false, false, false, false, false, false],
+        lvl_ul:false,
         updintv: 50,
         saveintv:1000,
         savetime:0
@@ -54,6 +56,10 @@ function load() {
         for (var i = 0; i < 4; i++)game.eng_atb[i] = ENify(game.eng_atb[i]);
         document.getElementById("ch-loopintv-1").value = game.updintv;
         document.getElementById("ch-saveintv-1").value = game.saveintv;
+        if (game.eng_ul) document.getElementById("eng-tab").style = "";
+        else document.getElementById("eng-tab").style = "display:none;";
+        if (game.lvl_ul) document.getElementById("lvl-tab").style = "";
+        else document.getElementById("lvl-tab").style = "display:none;";
     }
     lastupd = Date.now();
     if (game.savetime) {
@@ -96,6 +102,7 @@ function loop(mtm=-1) {
         if (ti == 10000) break;
     }
     if (game.btn_upd[0]) game.pnt = game.pnt.add(btn_atb2_eff().mul(tm).mul(pnt_btn_icd()).mul(game.btn_eng_m.add(1)));
+    game.btn_eng_m = game.btn_eng_m.add(game.pnt.add(1).log10().add(1).pow(0.5).sub(1).div(100).mul(tm / 1000));
 
     game.eng = game.eng.add(eng_atb_eff(1).mul(tm / 1000));
     game.eng_atb[0] = game.eng_atb[0].add(eng_atb_eff(2).mul(tm / 1000));
@@ -106,4 +113,6 @@ function loop(mtm=-1) {
     eng_disp_upd();
     document.getElementById("ch-loopintv-2").innerHTML = game.updintv;
     document.getElementById("ch-saveintv-2").innerHTML = game.saveintv;
+    if (game.pnt.gte(1e12)) game.eng_ul = true, document.getElementById("eng-tab").style = "";
+    if (game.eng.gte(ExpantaNum("1e1200"))) game.lvl_ul = true, document.getElementById("lvl-tab").style = "";
 }
