@@ -23,15 +23,16 @@ function get_eng_atb_btf(p, m) {
         if (m == 0) game.eng = game.eng.sub(eng_atb_cst(p)), game.eng_atb[p - 1] = game.eng_atb[p - 1].add(1);
         if (m == 1) {
             var k = eng_atb_maxaff(p);
-            game.eng = game.eng.sub(eng_atb_cst(p, k)), game.eng_atb[p - 1] = k.add(1)
+            if (!game.eng_upd[4]) game.eng = game.eng.sub(eng_atb_cst(p, k));
+            game.eng_atb[p - 1] = k.add(1);
         }
     }
 }
+var eng_upd_csts = [1e140, 1e200, 1e210, 1e300, ExpantaNum("1e400"), ExpantaNum("1e500")];
 function get_eng_upd_btf(i) {
-    var csts = [1e140, 1e200, 1e210, 1e300, ExpantaNum("1e400"), ExpantaNum("1e500")];
-    if (game.eng.gte(csts[i - 1]) && !game.eng_upd[i - 1]) {
+    if (game.eng.gte(eng_upd_csts[i - 1]) && !game.eng_upd[i - 1]) {
         game.eng_upd[i - 1] = true;
-        game.pnt = game.eng.sub(csts[i - 1]);
+        game.pnt = game.eng.sub(eng_upd_csts[i - 1]);
     }
 }
 function eng_rst() {
@@ -51,32 +52,38 @@ function eng_disp_upd() {
     if (game.eng_upd[0]) {
         document.getElementById("eng-upd-1").className = "s200b white";
     } else {
-        document.getElementById("eng-upd-1").className = "s200b black h-white";
+        if (game.eng.gte(eng_upd_csts[0])) document.getElementById("eng-upd-1").className = "s200b green h-white";
+        else document.getElementById("eng-upd-1").className = "s200b black h-white";
     }
     if (game.eng_upd[1]) {
         document.getElementById("eng-upd-2").className = "s200b white";
     } else {
-        document.getElementById("eng-upd-2").className = "s200b black h-white";
+        if (game.eng.gte(eng_upd_csts[1])) document.getElementById("eng-upd-2").className = "s200b green h-white";
+        else document.getElementById("eng-upd-2").className = "s200b black h-white";
     }
     if (game.eng_upd[2]) {
         document.getElementById("eng-upd-3").className = "s200b white";
     } else {
-        document.getElementById("eng-upd-3").className = "s200b black h-white";
+        if (game.eng.gte(eng_upd_csts[2])) document.getElementById("eng-upd-3").className = "s200b green h-white";
+        else document.getElementById("eng-upd-3").className = "s200b black h-white";
     }
     if (game.eng_upd[3]) {
         document.getElementById("eng-upd-4").className = "s200b white";
     } else {
-        document.getElementById("eng-upd-4").className = "s200b black h-white";
+        if (game.eng.gte(eng_upd_csts[3])) document.getElementById("eng-upd-4").className = "s200b green h-white";
+        else document.getElementById("eng-upd-4").className = "s200b black h-white";
     }
     if (game.eng_upd[4]) {
         document.getElementById("eng-upd-5").className = "s200b white";
     } else {
-        document.getElementById("eng-upd-5").className = "s200b black h-white";
+        if (game.eng.gte(eng_upd_csts[4])) document.getElementById("eng-upd-5").className = "s200b green h-white";
+        else document.getElementById("eng-upd-5").className = "s200b black h-white";
     }
     if (game.eng_upd[5]) {
         document.getElementById("eng-upd-6").className = "s200b white";
     } else {
-        document.getElementById("eng-upd-6").className = "s200b black h-white";
+        if (game.eng.gte(eng_upd_csts[5])) document.getElementById("eng-upd-6").className = "s200b green h-white";
+        else document.getElementById("eng-upd-6").className = "s200b black h-white";
     }
 
     document.getElementById("eng-1").innerHTML = game.eng;

@@ -19,7 +19,12 @@ function setstab(tab) {
     document.getElementById(tab).style = "";
     cstab = tab;
 }
+lvl_inited = false;
 function load() {
+    if (lvl_inited != true) {
+        init_lvl_table();
+        lvl_inited = true;
+    }
     game = {
         spd: 1,
         pnt: new ExpantaNum(0),
@@ -35,7 +40,10 @@ function load() {
         eng_btn_m :new ExpantaNum(0),
         eng_atb: [new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0)],
         eng_upd: [false, false, false, false, false, false],
-        lvl_ul:false,
+        lvl_ul: false,
+        lvl_num: [new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0)],
+        lvl_atb: [new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0)],
+        lvl_eng: [new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0)],
         updintv: 50,
         saveintv:1000,
         savetime:0
@@ -54,6 +62,7 @@ function load() {
         game.eng = ENify(game.eng);
         game.eng_btn_m = ENify(game.eng_btn_m);
         for (var i = 0; i < 4; i++)game.eng_atb[i] = ENify(game.eng_atb[i]);
+        for (var i = 0; i < 27; i++)game.lvl_num[i] = ENify(game.lvl_num[i]), game.lvl_atb[i] = ENify(game.lvl_atb[i]), game.lvl_eng[i] = ENify(game.lvl_eng[i]);
         document.getElementById("ch-loopintv-1").value = game.updintv;
         document.getElementById("ch-saveintv-1").value = game.saveintv;
         if (game.eng_ul) document.getElementById("eng-tab").style = "";
@@ -109,10 +118,17 @@ function loop(mtm=-1) {
     if (game.eng_upd[4]) for (var i = 1; i <= 4; i++)get_eng_atb_btf(i, 1);
     if (game.eng_upd[5]) game.btn_eng_m = game.btn_eng_m.add(eng_to_btn_val().mul(tm / 1000)), game.eng_btn_m = game.eng_btn_m.add(btn_to_eng_val().mul(tm / 1000));
 
+    lvl_val_upd(tm);
+
     btn_disp_upd();
     eng_disp_upd();
+    lvl_disp_upd();
     document.getElementById("ch-loopintv-2").innerHTML = game.updintv;
     document.getElementById("ch-saveintv-2").innerHTML = game.saveintv;
-    if (game.pnt.gte(1e12)) game.eng_ul = true, document.getElementById("eng-tab").style = "";
-    if (game.eng.gte(ExpantaNum("1e1200"))) game.lvl_ul = true, document.getElementById("lvl-tab").style = "";
+    if (game.pnt.gte(1e12)) game.eng_ul = true;
+    if (game.eng.gte(ExpantaNum("1e1200"))) game.lvl_ul = true;
+    if (game.eng_ul) document.getElementById("eng-tab").style = "";
+    else document.getElementById("eng-tab").style = "display:none;";
+    if (game.lvl_ul) document.getElementById("lvl-tab").style = "";
+    else document.getElementById("lvl-tab").style = "display:none;";
 }

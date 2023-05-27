@@ -43,11 +43,11 @@ function get_btn_atb_1_btf() {
 function get_btn_atb_2_btf() {
     if (game.btn.gte(btn_atb2_cst())) game.btn = game.btn.sub(btn_atb2_cst()), game.btn_atb_2 = game.btn_atb_2.add(1);
 }
+var btn_upd_csts = [1e4, 1e5, 1e6, 1e8, 1e10, 1e12];
 function get_btn_upd_btf(i) {
-    var csts = [1e4, 1e5, 1e6, 1e8, 1e10, 1e12];
-    if (game.pnt.gte(csts[i-1]) && !game.btn_upd[i-1]) {
+    if (game.pnt.gte(btn_upd_csts[i-1]) && !game.btn_upd[i-1]) {
         game.btn_upd[i-1] = true;
-        game.pnt = game.pnt.sub(csts[i-1]);
+        game.pnt = game.pnt.sub(btn_upd_csts[i-1]);
     }
 }
 function btn_rst(){
@@ -76,32 +76,37 @@ function btn_disp_upd() {
         document.getElementById("btn-cd-2").style = "display:none;";
         document.getElementById("btn-get-pnt-btn").innerHTML = "手动购买点数已禁用"
     } else {
-        document.getElementById("btn-upd-1").className = "s200b black h-white";
+        if (game.pnt.gte(btn_upd_csts[0])) document.getElementById("btn-upd-1").className = "s200b green h-white";
+        else document.getElementById("btn-upd-1").className = "s200b black h-white";
         document.getElementById("btn-cd-2").style = "";
         document.getElementById("btn-get-pnt-btn").innerHTML = "点击以获得点数"
     }
     if (game.btn_upd[1]) {
         document.getElementById("btn-upd-2").className = "s200b white";
     } else {
-        document.getElementById("btn-upd-2").className = "s200b black h-white";
+        if (game.pnt.gte(btn_upd_csts[1])) document.getElementById("btn-upd-2").className = "s200b green h-white";
+        else document.getElementById("btn-upd-2").className = "s200b black h-white";
     }
     if (game.btn_upd[2]) {
         document.getElementById("btn-upd-3").className = "s200b white";
     } else {
-        document.getElementById("btn-upd-3").className = "s200b black h-white";
+        if (game.pnt.gte(btn_upd_csts[2])) document.getElementById("btn-upd-3").className = "s200b green h-white";
+        else document.getElementById("btn-upd-3").className = "s200b black h-white";
     }
     if (game.btn_upd[3]) {
         document.getElementById("btn-upd-4").className = "s200b white";
         document.getElementById("btn-atb-1-4").style = "display:none;";
         game.btn_atb_1 = new ExpantaNum(0);
     } else {
-        document.getElementById("btn-upd-4").className = "s200b black h-white";
+        if (game.pnt.gte(btn_upd_csts[3])) document.getElementById("btn-upd-4").className = "s200b green h-white";
+        else document.getElementById("btn-upd-4").className = "s200b black h-white";
         document.getElementById("btn-atb-1-4").style = "text-align: center;";
     }
     if (game.btn_upd[4]) {
         document.getElementById("btn-upd-5").className = "s200b white";
     } else {
-        document.getElementById("btn-upd-5").className = "s200b black h-white";
+        if (game.pnt.gte(btn_upd_csts[4])) document.getElementById("btn-upd-5").className = "s200b green h-white";
+        else document.getElementById("btn-upd-5").className = "s200b black h-white";
     }
     if (game.btn_upd[5]) {
         document.getElementById("btn-upd-6").className = "s200b white";
@@ -109,7 +114,8 @@ function btn_disp_upd() {
         document.getElementById("btn-nxt-1").style = "display:none;";
         game.btn_atb_2 = new ExpantaNum(0);
     } else {
-        document.getElementById("btn-upd-6").className = "s200b black h-white";
+        if (game.pnt.gte(btn_upd_csts[5])) document.getElementById("btn-upd-6").className = "s200b green h-white";
+        else document.getElementById("btn-upd-6").className = "s200b black h-white";
         document.getElementById("btn-atb-2-4").style = "text-align: center;";
         document.getElementById("btn-nxt-1").style = "text-align: center;";
     }
