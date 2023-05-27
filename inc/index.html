@@ -8,6 +8,7 @@
     <script src="js/sl.js"></script>
     <script src="js/btn.js"></script>
     <script src="js/eng.js"></script>
+    <script src="js/lvl.js"></script>
     <link rel="stylesheet" href="style.css" />
 </head>
 <body onload="load()">
@@ -74,7 +75,7 @@
                         <button onclick="get_eng_upd_btf(4)" class="s200b black h-white" style="color:#8080ff;" id="eng-upd-4">重置按钮时保留按钮升级<br />花费:1e300能量</button>
                     </td>
                     <td>
-                        <button onclick="get_eng_upd_btf(5)" class="s200b black h-white" style="color:#8080ff;" id="eng-upd-5">自动购买能量可重复购买项<br />花费:1e400能量</button>
+                        <button onclick="get_eng_upd_btf(5)" class="s200b black h-white" style="color:#8080ff;" id="eng-upd-5">自动购买能量可重复购买项 且不花费能量<br />花费:1e400能量</button>
                     </td>
                     <td>
                         <button onclick="get_eng_upd_btf(6)" class="s200b black h-white" style="color:#8080ff;" id="eng-upd-6">按钮和能量被动互相生成重置加成<br />花费:1e500能量</button>
@@ -85,7 +86,9 @@
         <p style="text-align: center;"><button onclick="eng_to_btn_btf()">点击以重置能量和自动购买器 但是给点数加成</button></p>
     </div>
     <div id="lvl" style="display:none;">
-        <p>test</p>
+        <table style="text-align:center;" id="lvl-1">
+
+        </table>
     </div>
     <div id="setig" style="display:none;">
         <p style="text-align: center">
@@ -105,9 +108,10 @@
         </p>
         <p style="text-align:center;">
             更新历史:<br />
-            开始于2023.4.1?(这几天)<br />
+            开始于2023.4.15~2023.4.17<br />
             2023.5.20 0.0.1:互相重置<br />
-            当前残局:e2400点数/e1200能量
+            2023.5.27 0.0.2:第一层<br />
+            当前残局:e1400能量
         </p>
     </div>
 </body>
