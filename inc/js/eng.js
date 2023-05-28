@@ -32,7 +32,7 @@ var eng_upd_csts = [1e140, 1e200, 1e210, 1e300, ExpantaNum("1e400"), ExpantaNum(
 function get_eng_upd_btf(i) {
     if (game.eng.gte(eng_upd_csts[i - 1]) && !game.eng_upd[i - 1]) {
         game.eng_upd[i - 1] = true;
-        game.pnt = game.eng.sub(eng_upd_csts[i - 1]);
+        game.eng = game.eng.sub(eng_upd_csts[i - 1]);
     }
 }
 function eng_rst() {
