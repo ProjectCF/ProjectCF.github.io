@@ -24,6 +24,11 @@ p{
     height:146px;
     border:2px solid #0000ff;
 }
+.s200r {
+    width: 196px;
+    height: 146px;
+    border: 2px solid #ff0000;
+}
 .s80 {
     width: 80px;
     height: 40px;
