@@ -19,12 +19,8 @@ function setstab(tab) {
     document.getElementById(tab).style = "";
     cstab = tab;
 }
-lvl_inited = false;
+inited = false;
 function load() {
-    if (lvl_inited != true) {
-        init_lvl_table();
-        lvl_inited = true;
-    }
     game = {
         spd: 1,
         pnt: new ExpantaNum(0),
@@ -35,20 +31,26 @@ function load() {
         btn_atb_2: new ExpantaNum(0),
         btn_upd: [false, false, false, false, false, false],
         btn_eng_m: new ExpantaNum(0),
-        eng_ul:false,
+        eng_ul: false,
         eng: new ExpantaNum(0),
-        eng_btn_m :new ExpantaNum(0),
+        eng_btn_m: new ExpantaNum(0),
         eng_atb: [new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0)],
         eng_upd: [false, false, false, false, false, false],
         lvl_ul: false,
         lvl_num: [new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0)],
         lvl_atb: [new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0)],
         lvl_eng: [new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0)],
+        lvl_upd: [false],
         updintv: 50,
-        saveintv:1000,
-        savetime:0
-    }
+        saveintv: 1000,
+        savetime: 0
+    };
     ogame = game;
+    if (inited != true) {
+        init_lvl_table();
+        init_lvl_upd();
+        inited = true;
+    }
     var tpg = JSON.parse(localStorage.getItem("test"));
     if (tpg != null) {
         game = tpg;
@@ -115,6 +117,7 @@ function loop(mtm=-1) {
 
     game.eng = game.eng.add(eng_atb_eff(1).mul(tm / 1000));
     game.eng_atb[0] = game.eng_atb[0].add(eng_atb_eff(2).mul(tm / 1000));
+    if (game.lvl_upd[1]) game.eng_atb[2] = game.eng_atb[2].add(eng_atb_eff(4).add(1).pow(1 / 15).sub(1).mul(tm / 1000));
     if (game.eng_upd[4]) for (var i = 1; i <= 4; i++)get_eng_atb_btf(i, 1);
     if (game.eng_upd[5]) game.btn_eng_m = game.btn_eng_m.add(eng_to_btn_val().mul(tm / 1000)), game.eng_btn_m = game.eng_btn_m.add(btn_to_eng_val().mul(tm / 1000));
 
@@ -123,6 +126,8 @@ function loop(mtm=-1) {
     btn_disp_upd();
     eng_disp_upd();
     lvl_disp_upd();
+    upd_upd();
+
     document.getElementById("ch-loopintv-2").innerHTML = game.updintv;
     document.getElementById("ch-saveintv-2").innerHTML = game.saveintv;
     if (game.pnt.gte(1e12)) game.eng_ul = true;
@@ -131,4 +136,26 @@ function loop(mtm=-1) {
     else document.getElementById("eng-tab").style = "display:none;";
     if (game.lvl_ul) document.getElementById("lvl-tab").style = "";
     else document.getElementById("lvl-tab").style = "display:none;";
+}
+function crt_upd(cl, st, cl2, st2, cl3, st3, id, gb, ib, ob, str) {
+    var a = document.createElement("button");
+    a.className = cl;
+    a.style = st;
+    a.id = id;
+    a.upd_id = upd_hdl.length;
+    a.appendChild(str);
+    a.addEventListener("click", function () { buy_upd(this.upd_id); });
+    upd_hdl.push([cl, st, cl2, st2, cl3, st3, id, gb, ib, ob]);
+    return a;
+}
+upd_hdl = [];
+function upd_upd() {
+    for (var i = 0; i < upd_hdl.length; i++) {
+        if (upd_hdl[i][7]()) document.getElementById(upd_hdl[i][6]).className = upd_hdl[i][4], document.getElementById(upd_hdl[i][6]).style = upd_hdl[i][5];
+        else if (upd_hdl[i][8]()) document.getElementById(upd_hdl[i][6]).className = upd_hdl[i][2], document.getElementById(upd_hdl[i][6]).style = upd_hdl[i][3];
+        else document.getElementById(upd_hdl[i][6]).className = upd_hdl[i][0], document.getElementById(upd_hdl[i][6]).style = upd_hdl[i][1];
+    }
+}
+function buy_upd(i) {
+    if (!upd_hdl[i][7]() && upd_hdl[i][8]()) upd_hdl[i][9]();
 }

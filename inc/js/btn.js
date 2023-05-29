@@ -62,7 +62,7 @@ function btn_rst(){
     if(!game.eng_upd[3])game.btn_upd = [false, false, false, false, false, false];
 }
 function btn_to_eng_val() {
-    if (!game.eng_upd[0]) return game.pnt.log10().pow(2);
+    if (!game.eng_upd[0]) return game.pnt.add(1).log10().pow(2);
     else if (!game.eng_upd[2]) return game.pnt.pow(1 / 15);
     else return game.pnt.pow(1 / 10);
 }

@@ -14,7 +14,11 @@ function eng_atb_maxaff(i) {
 }
 function eng_atb_eff(i) {
     if (i == 1) return game.eng_atb[0].mul(game.eng_btn_m.add(1)).mul(eng_atb_eff(3).add(1)).pow(eng_atb_eff(4).add(1).log10().add(1));
-    if (i == 2) return game.eng_atb[1].mul(eng_atb_eff(3).add(1));
+    if (i == 2) {
+        if (!game.lvl_upd[0]) return game.eng_atb[1].mul(eng_atb_eff(3).add(1));
+        else if (!game.lvl_upd[2]) return game.eng_atb[1].mul(eng_atb_eff(3).add(1)).pow(eng_atb_eff(4).add(1).log10().div(5).add(1));
+        else return game.eng_atb[1].mul(eng_atb_eff(3).add(1)).pow(eng_atb_eff(4).add(1).log10().mul(0.3).add(1));
+    }
     if (i == 3) return game.eng_atb[2].pow(2).pow(eng_atb_eff(4).add(1).log10().add(1));
     if (i == 4) return game.eng_atb[3];
 }
@@ -40,7 +44,7 @@ function eng_rst() {
     for (var i = 0; i <= 4; i++) game.eng_atb[i] = new ExpantaNum(0);
 }
 function eng_to_btn_val() {
-    if (!game.eng_upd[0]) return game.eng.log10().pow(2);
+    if (!game.eng_upd[0]) return game.eng.add(1).log10().pow(2);
     else if (!game.eng_upd[2]) return game.eng.pow(1 / 15);
     else return game.eng.pow(1 / 10);
 }
