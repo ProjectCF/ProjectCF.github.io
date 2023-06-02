@@ -17,10 +17,14 @@ function eng_atb_eff(i) {
     if (i == 2) {
         if (!game.lvl_upd[0]) return game.eng_atb[1].mul(eng_atb_eff(3).add(1));
         else if (!game.lvl_upd[2]) return game.eng_atb[1].mul(eng_atb_eff(3).add(1)).pow(eng_atb_eff(4).add(1).log10().div(5).add(1));
-        else return game.eng_atb[1].mul(eng_atb_eff(3).add(1)).pow(eng_atb_eff(4).add(1).log10().mul(0.3).add(1));
+        else if (!game.lvl_upd[13]) return game.eng_atb[1].mul(eng_atb_eff(3).add(1)).pow(eng_atb_eff(4).add(1).log10().mul(0.3).add(1));
+        else return game.eng_atb[1].mul(eng_atb_eff(3).add(1)).pow(eng_atb_eff(4).add(1).log10().mul(0.4).add(1));
     }
-    if (i == 3) return game.eng_atb[2].pow(2).pow(eng_atb_eff(4).add(1).log10().add(1));
-    if (i == 4) return game.eng_atb[3];
+    if (i == 3) {
+        if (!game.lvl_upd[5]) return game.eng_atb[2].pow(2).pow(eng_atb_eff(4).add(1).log10().add(1));
+        else return game.eng_atb[2].pow(2).mul(game.eng_atb[1]).pow(eng_atb_eff(4).add(1).log10().add(1));
+    }
+    if (i == 4) return game.eng_atb[3].pow(1 + (game.lvl_upd[8] ? 1 : 0));
 }
 function get_eng_atb_btf(p, m) {
     if (game.eng.gte(eng_atb_cst(p))) {

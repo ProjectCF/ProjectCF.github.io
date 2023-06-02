@@ -40,7 +40,7 @@ function load() {
         lvl_num: [new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0)],
         lvl_atb: [new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0)],
         lvl_eng: [new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0), new ExpantaNum(0)],
-        lvl_upd: [false],
+        lvl_upd: [],
         updintv: 50,
         saveintv: 1000,
         savetime: 0
@@ -75,6 +75,7 @@ function load() {
     lastupd = Date.now();
     if (game.savetime) {
         var diftime = lastupd - game.savetime;
+        while (diftime > 10000000) loop(diftime / 1000), diftime *= 0.999;
         while (diftime > 1000) loop(1000), diftime -= 1000;
         if (diftime) loop(diftime);
     }
@@ -115,9 +116,10 @@ function loop(mtm=-1) {
     if (game.btn_upd[0]) game.pnt = game.pnt.add(btn_atb2_eff().mul(tm).mul(pnt_btn_icd()).mul(game.btn_eng_m.add(1)));
     game.btn_eng_m = game.btn_eng_m.add(game.pnt.add(1).log10().add(1).pow(0.5).sub(1).div(100).mul(tm / 1000));
 
-    game.eng = game.eng.add(eng_atb_eff(1).mul(tm / 1000));
+    game.eng = game.eng.add(sftcap(eng_atb_eff(1), ExpantaNum.pow(2, 1024 * 25), 2, 0.9).mul(new ExpantaNum(1).add(game.lvl_upd[7] ? ExpantaNum.pow(10, game.lvl_eng[0].add(1).log10().pow(1.5 + 1.5 * (game.lvl_upd[14] ? 1 : 0))) : 0)).mul(tm / 1000));
     game.eng_atb[0] = game.eng_atb[0].add(eng_atb_eff(2).mul(tm / 1000));
-    if (game.lvl_upd[1]) game.eng_atb[2] = game.eng_atb[2].add(eng_atb_eff(4).add(1).pow(1 / 15).sub(1).mul(tm / 1000));
+    if (game.lvl_upd[1]) game.eng_atb[2] = game.eng_atb[2].add(eng_atb_eff(4).add(1).pow(game.lvl_upd[4] ? 3 : 1 / 8).sub(1).mul(tm / 1000));
+    if (game.lvl_upd[6]) game.eng_atb[3] = game.eng_atb[3].add(game.eng_atb[1].add(1).log10().pow(3).mul(tm / 1000));
     if (game.eng_upd[4]) for (var i = 1; i <= 4; i++)get_eng_atb_btf(i, 1);
     if (game.eng_upd[5]) game.btn_eng_m = game.btn_eng_m.add(eng_to_btn_val().mul(tm / 1000)), game.eng_btn_m = game.eng_btn_m.add(btn_to_eng_val().mul(tm / 1000));
 
